@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #f7c6d0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.card {
+  background: white;
+  width: 1800px;
+  padding: 150px;
+  border-radius: 60px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 50px 120px rgba(0,0,0,0.35);
+}
+
+.emoji {
+  font-size: 220px;
+}
+
+h2 {
+  font-size: 82px;
+  margin: 80px 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 240px;
+  height: 260px;
+  position: relative;
+}
+
+button {
+  padding: 45px 120px;
+  font-size: 48px;
+  border-radius: 90px;
+  border: none;
+  cursor: pointer;
+}
+
+#yes {
+  background: #ff4d6d;
+  color: white;
+  transition: transform 0.3s;
+}
+
+#no {
+  background: #e0e0e0;
+}
+
+/* 🔥 SUPER VISIBLE MESSAGE */
+.hint {
+  margin-top: 100px;
+  font-size: 42px;
+  font-weight: bold;
+  color: #ff2f68;
+  background: #ffe1ea;
+  padding: 30px 60px;
+  border-radius: 70px;
+  display: inline-block;
+  animation: pop 0.35s ease;
+}
+
+/* floating hearts */
+.heart {
+  position: fixed;
+  font-size: 40px;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+@keyframes fall {
+  from { transform: translateY(-20px); }
+  to { transform: translateY(110vh); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.75); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="emoji">🐱💖</div>
+  <h2>neelu will you be my valentine?</h2>
+
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+
+  <div class="hint" id="hint">"No" seems a bit shy 😅</div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const hint = document.getElementById("hint");
+const card = document.querySelector(".card");
+
+let scale = 1;
+let tries = 0;
+
+const messages = [
+  "Are you sure? 😳",
+  "Think again 💭",
+  "Don’t be shy 🫶",
+  "You’re enjoying this 😏",
+  "There is no escape 😈",
+  "Okay you LOVE this 😌💖"
+];
+
+noBtn.addEventListener("mouseenter", () => {
+  tries++;
+
+  // move no
+  noBtn.style.position = "absolute";
+  const x = Math.random() * (card.offsetWidth - noBtn.offsetWidth - 200);
+  const y = Math.random() * (card.offsetHeight - noBtn.offsetHeight - 200);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  // grow yes
+  scale += 0.18;
+  yesBtn.style.transform = `scale(${scale})`;
+
+  // update message with animation reset
+  hint.style.animation = "none";
+  hint.offsetHeight; // force reflow
+  hint.style.animation = "pop 0.35s ease";
+  hint.innerText = messages[tries % messages.length];
+
+  // no becomes yes 😈
+  if (tries === 6) {
+    noBtn.innerText = "Yes 😏";
+    noBtn.style.background = "#ff4d6d";
+    noBtn.style.color = "white";
+  }
+});
+
+// floating hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.innerText = "💖";
+  heart.className = "heart";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 300);
+
+// celebration
+yesBtn.onclick = celebrate;
+noBtn.onclick = celebrate;
+
+function celebrate() {
+  document.body.innerHTML = "<h1 style='font-size:150px;color:#ff4d6d;'>YAYYY 💕🥰</h1>";
+
+  for (let i = 0; i < 140; i++) {
+    const c = document.createElement("div");
+    c.innerText = "🎉";
+    c.style.position = "fixed";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.top = "-30px";
+    c.style.fontSize = "55px";
+    c.style.animation = "fall 2s linear";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>
